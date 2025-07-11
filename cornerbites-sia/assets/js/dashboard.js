@@ -1,10 +1,10 @@
-
 // Dashboard JavaScript untuk HPP Calculator
 document.addEventListener('DOMContentLoaded', function() {
     // Initialize dashboard features
     initQuickActions();
     initAlerts();
     initRankingControls();
+    initCharts();
 
     console.log('HPP Dashboard loaded successfully');
 });
@@ -61,6 +61,176 @@ function initRankingControls() {
     if (limitSelect) {
         limitSelect.addEventListener('change', function() {
             updateRankingLimit(this.value);
+        });
+    }
+
+    // Load initial ranking data
+    loadRankingData(1, 10, '');
+}
+
+function initCharts() {
+    // Check if dashboard data is available
+    if (typeof window.dashboardData === 'undefined') {
+        console.error('Dashboard data not available');
+        return;
+    }
+
+    const data = window.dashboardData;
+
+    // Chart.js untuk Tren Penjualan & Pengeluaran
+    const ctxMonthly = document.getElementById('monthlyChart');
+    if (ctxMonthly) {
+        const monthlyChart = new Chart(ctxMonthly.getContext('2d'), {
+            type: 'line',
+            data: {
+                labels: data.monthsLabel,
+                datasets: [
+                    {
+                        label: 'Penjualan',
+                        data: data.monthlySales,
+                        backgroundColor: 'rgba(34, 197, 94, 0.1)',
+                        borderColor: 'rgba(34, 197, 94, 1)',
+                        borderWidth: 3,
+                        fill: true,
+                        tension: 0.4,
+                        pointBackgroundColor: 'rgba(34, 197, 94, 1)',
+                        pointBorderColor: '#fff',
+                        pointBorderWidth: 2,
+                        pointRadius: 6,
+                    },
+                    {
+                        label: 'Pengeluaran',
+                        data: data.monthlyExpenses,
+                        backgroundColor: 'rgba(239, 68, 68, 0.1)',
+                        borderColor: 'rgba(239, 68, 68, 1)',
+                        borderWidth: 3,
+                        fill: true,
+                        tension: 0.4,
+                        pointBackgroundColor: 'rgba(239, 68, 68, 1)',
+                        pointBorderColor: '#fff',
+                        pointBorderWidth: 2,
+                        pointRadius: 6,
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                        labels: {
+                            usePointStyle: true,
+                            padding: 20,
+                            font: {
+                                family: 'Inter',
+                                size: 12
+                            }
+                        }
+                    },
+                    tooltip: {
+                        backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                        titleColor: '#fff',
+                        bodyColor: '#fff',
+                        borderColor: 'rgba(255, 255, 255, 0.1)',
+                        borderWidth: 1,
+                        cornerRadius: 8,
+                        callbacks: {
+                            label: function(context) {
+                                return context.dataset.label + ': Rp ' + new Intl.NumberFormat('id-ID').format(context.parsed.y);
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        grid: {
+                            color: 'rgba(0, 0, 0, 0.05)',
+                        },
+                        ticks: {
+                            callback: function(value) {
+                                return 'Rp ' + new Intl.NumberFormat('id-ID').format(value);
+                            },
+                            font: {
+                                family: 'Inter',
+                                size: 11
+                            }
+                        }
+                    },
+                    x: {
+                        grid: {
+                            display: false,
+                        },
+                        ticks: {
+                            font: {
+                                family: 'Inter',
+                                size: 11
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    // Chart.js untuk Produk Terlaris
+    const ctxPopular = document.getElementById('popularProductsChart');
+    if (ctxPopular) {
+        const popularProductsChart = new Chart(ctxPopular.getContext('2d'), {
+            type: 'doughnut',
+            data: {
+                labels: data.popularProductNames,
+                datasets: [{
+                    data: data.popularProductQuantities,
+                    backgroundColor: [
+                        'rgba(99, 102, 241, 0.8)',
+                        'rgba(168, 85, 247, 0.8)',
+                        'rgba(236, 72, 153, 0.8)',
+                        'rgba(245, 158, 11, 0.8)',
+                        'rgba(34, 197, 94, 0.8)'
+                    ],
+                    borderColor: [
+                        'rgba(99, 102, 241, 1)',
+                        'rgba(168, 85, 247, 1)',
+                        'rgba(236, 72, 153, 1)',
+                        'rgba(245, 158, 11, 1)',
+                        'rgba(34, 197, 94, 1)'
+                    ],
+                    borderWidth: 2,
+                    hoverOffset: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            usePointStyle: true,
+                            padding: 15,
+                            font: {
+                                family: 'Inter',
+                                size: 11
+                            }
+                        }
+                    },
+                    tooltip: {
+                        backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                        titleColor: '#fff',
+                        bodyColor: '#fff',
+                        borderColor: 'rgba(255, 255, 255, 0.1)',
+                        borderWidth: 1,
+                        cornerRadius: 8,
+                        callbacks: {
+                            label: function(context) {
+                                return context.label + ': ' + new Intl.NumberFormat('id-ID').format(context.parsed) + ' unit';
+                            }
+                        }
+                    }
+                }
+            }
         });
     }
 }

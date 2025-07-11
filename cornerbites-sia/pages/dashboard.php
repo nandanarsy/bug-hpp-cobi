@@ -605,173 +605,20 @@ $popularProductQuantitiesJson = json_encode($popularProductQuantities);
 
 <!-- Chart.js CDN -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.0/dist/chart.min.js"></script>
-<script src="/cornerbites-sia/assets/js/dashboard.js"></script>
 
+<!-- Dashboard Data for JavaScript -->
 <script>
     // Data PHP yang di-encode ke JSON
-    const monthsLabel = <?php echo $monthsLabelJson; ?>;
-    const monthlySales = <?php echo $monthlySalesJson; ?>;
-    const monthlyExpenses = <?php echo $monthlyExpensesJson; ?>;
-    const popularProductNames = <?php echo $popularProductNamesJson; ?>;
-    const popularProductQuantities = <?php echo $popularProductQuantitiesJson; ?>;
-
-    // Chart.js untuk Tren Penjualan & Pengeluaran
-    const ctxMonthly = document.getElementById('monthlyChart').getContext('2d');
-    const monthlyChart = new Chart(ctxMonthly, {
-        type: 'line',
-        data: {
-            labels: monthsLabel,
-            datasets: [
-                {
-                    label: 'Penjualan',
-                    data: monthlySales,
-                    backgroundColor: 'rgba(34, 197, 94, 0.1)',
-                    borderColor: 'rgba(34, 197, 94, 1)',
-                    borderWidth: 3,
-                    fill: true,
-                    tension: 0.4,
-                    pointBackgroundColor: 'rgba(34, 197, 94, 1)',
-                    pointBorderColor: '#fff',
-                    pointBorderWidth: 2,
-                    pointRadius: 6,
-                },
-                {
-                    label: 'Pengeluaran',
-                    data: monthlyExpenses,
-                    backgroundColor: 'rgba(239, 68, 68, 0.1)',
-                    borderColor: 'rgba(239, 68, 68, 1)',
-                    borderWidth: 3,
-                    fill: true,
-                    tension: 0.4,
-                    pointBackgroundColor: 'rgba(239, 68, 68, 1)',
-                    pointBorderColor: '#fff',
-                    pointBorderWidth: 2,
-                    pointRadius: 6,
-                }
-            ]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                legend: {
-                    position: 'top',
-                    labels: {
-                        usePointStyle: true,
-                        padding: 20,
-                        font: {
-                            family: 'Inter',
-                            size: 12
-                        }
-                    }
-                },
-                tooltip: {
-                    backgroundColor: 'rgba(0, 0, 0, 0.8)',
-                    titleColor: '#fff',
-                    bodyColor: '#fff',
-                    borderColor: 'rgba(255, 255, 255, 0.1)',
-                    borderWidth: 1,
-                    cornerRadius: 8,
-                    callbacks: {
-                        label: function(context) {
-                            return context.dataset.label + ': Rp ' + new Intl.NumberFormat('id-ID').format(context.parsed.y);
-                        }
-                    }
-                }
-            },
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    grid: {
-                        color: 'rgba(0, 0, 0, 0.05)',
-                    },
-                    ticks: {
-                        callback: function(value) {
-                            return 'Rp ' + new Intl.NumberFormat('id-ID').format(value);
-                        },
-                        font: {
-                            family: 'Inter',
-                            size: 11
-                        }
-                    }
-                },
-                x: {
-                    grid: {
-                        display: false,
-                    },
-                    ticks: {
-                        font: {
-                            family: 'Inter',
-                            size: 11
-                        }
-                    }
-                }
-            }
-        }
-    });
-
-    // Chart.js untuk Produk Terlaris
-    const ctxPopular = document.getElementById('popularProductsChart').getContext('2d');
-    const popularProductsChart = new Chart(ctxPopular, {
-        type: 'doughnut',
-        data: {
-            labels: popularProductNames,
-            datasets: [{
-                data: popularProductQuantities,
-                backgroundColor: [
-                    'rgba(99, 102, 241, 0.8)',
-                    'rgba(168, 85, 247, 0.8)',
-                    'rgba(236, 72, 153, 0.8)',
-                    'rgba(245, 158, 11, 0.8)',
-                    'rgba(34, 197, 94, 0.8)'
-                ],
-                borderColor: [
-                    'rgba(99, 102, 241, 1)',
-                    'rgba(168, 85, 247, 1)',
-                    'rgba(236, 72, 153, 1)',
-                    'rgba(245, 158, 11, 1)',
-                    'rgba(34, 197, 94, 1)'
-                ],
-                borderWidth: 2,
-                hoverOffset: 4
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                legend: {
-                    position: 'bottom',
-                    labels: {
-                        usePointStyle: true,
-                        padding: 15,
-                        font: {
-                            family: 'Inter',
-                            size: 11
-                        }
-                    }
-                },
-                tooltip: {
-                    backgroundColor: 'rgba(0, 0, 0, 0.8)',
-                    titleColor: '#fff',
-                    bodyColor: '#fff',
-                    borderColor: 'rgba(255, 255, 255, 0.1)',
-                    borderWidth: 1,
-                    cornerRadius: 8,
-                    callbacks: {
-                        label: function(context) {
-                            return context.label + ': ' + new Intl.NumberFormat('id-ID').format(context.parsed) + ' unit';
-                        }
-                    }
-                }
-            }
-        }
-    });
-
-    // Load ranking data on page load
-    document.addEventListener('DOMContentLoaded', function() {
-        loadRankingData(1, 10, '');
-    });
+    window.dashboardData = {
+        monthsLabel: <?php echo $monthsLabelJson; ?>,
+        monthlySales: <?php echo $monthlySalesJson; ?>,
+        monthlyExpenses: <?php echo $monthlyExpensesJson; ?>,
+        popularProductNames: <?php echo $popularProductNamesJson; ?>,
+        popularProductQuantities: <?php echo $popularProductQuantitiesJson; ?>
+    };
 </script>
+
+<!-- Load Dashboard JavaScript -->
+<script src="/cornerbites-sia/assets/js/dashboard.js"></script>
 
 <?php include_once __DIR__ . '/../includes/footer.php'; ?>
