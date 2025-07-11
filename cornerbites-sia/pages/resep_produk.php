@@ -723,44 +723,41 @@ try {
                                     <div class="flex justify-between items-center mb-4">
                                         <h4 class="font-bold text-gray-800 flex items-center">
                                             <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 0 011 1v5m-4 0h4"></path>
                                             </svg>
                                             Detail Biaya Overhead:
                                         </h4>
                                         <span class="text-sm text-gray-500">Hanya yang dipilih untuk produk ini</span>
                                     </div>
                                     <?php if (!empty($hppCalculation['overhead_details'])): ?>
-                                        <div class="space-y-3">
-                                            <?php foreach ($hppCalculation['overhead_details'] as $detail): ?>
-                                                <div class="flex justify-between items-center p-3 bg-purple-50 rounded-lg border border-purple-200">
-                                                    <div class="flex-1">
-                                                        <span class="font-medium text-gray-900"><?php echo htmlspecialchars($detail['name']); ?></span>
-                                                        <?php if ($detail['description']): ?>
-                                                            <p class="text-xs text-gray-500 mt-1"><?php echo htmlspecialchars($detail['description']); ?></p>
-                                                        <?php endif; ?>
-                                                    </div>
-                                                    <div class="flex-1 text-center">
-                                                        <span class="text-sm text-gray-600">
-                                                            <?php echo ucfirst(str_replace('_', ' ', $detail['allocation_method'])); ?>: 
-                                                            <?php echo number_format($detail['amount'], 0, ',', '.'); ?>
-                                                            <?php echo $detail['allocation_method'] == 'percentage' ? '%' : ($detail['allocation_method'] == 'per_hour' ? '/jam' : '/unit'); ?>
-                                                        </span>
-                                                    </div>
-                                                    <div class="flex-1 text-right flex items-center justify-end space-x-4">
-                                                        <span class="font-semibold text-gray-900 mr-4">Rp <?php echo number_format($detail['cost_per_item'], 0, ',', '.'); ?></span>
-                                                        <div class="flex items-center">
-                                                            <button onclick="deleteManualOverhead(<?php echo $detail['manual_id'] ?? 0; ?>)" class="px-2 py-1 text-xs font-medium text-red-600 bg-red-100 border border-red-300 rounded hover:bg-red-200 hover:border-red-400 transition-colors duration-200">
-                                                                <svg class="w-3 h-3 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
-                                                        </svg>
-                                                        Hapus
-                                                    </button>
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                <div class="space-y-3">
+                                    <?php foreach ($hppCalculation['overhead_details'] as $detail): ?>
+                                        <div class="flex justify-between items-center p-3 bg-purple-50 rounded-lg border border-purple-200">
+                                            <div class="flex-1">
+                                                <span class="font-medium text-gray-900"><?php echo htmlspecialchars($detail['name']); ?></span>
+                                                <?php if ($detail['description']): ?>
+                                                    <p class="text-xs text-gray-500 mt-1"><?php echo htmlspecialchars($detail['description']); ?></p>
+                                                <?php endif; ?>
                                             </div>
-                                        <?php endforeach; ?>
-                                    </div>
+                                            <div class="flex-1 text-center">
+                                                <span class="text-sm text-gray-600">
+                                                    <?php echo ucfirst(str_replace('_', ' ', $detail['allocation_method'])); ?>: 
+                                                    <?php echo number_format($detail['amount'], 0, ',', '.'); ?>
+                                                    <?php echo $detail['allocation_method'] == 'percentage' ? '%' : ($detail['allocation_method'] == 'per_hour' ? '/jam' : '/unit'); ?>
+                                                </span>
+                                            </div>
+                                            <div class="flex-1 text-right flex items-center justify-end space-x-4">
+                                                <span class="font-semibold text-gray-900 mr-4">Rp <?php echo number_format($detail['cost_per_item'], 0, ',', '.'); ?></span>
+                                                <button onclick="deleteManualOverhead(<?php echo $detail['manual_id'] ?? 0; ?>)" class="px-2 py-1 text-xs font-medium text-red-600 bg-red-100 border border-red-300 rounded hover:bg-red-200 hover:border-red-400 transition-colors duration-200">
+                                                    <svg class="w-3 h-3 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                                                    </svg>
+                                                    Hapus
+                                                </button>
+                                            </div>
+                                        </div>
+                                    <?php endforeach; ?>
+                                </div>
                                     <?php else: ?>
                                         <div class="text-center py-8">
                                             <svg class="w-12 h-12 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -784,56 +781,38 @@ try {
                     </div>
 
                     <!-- Container Section untuk Input Items -->
-                    <div class="bg-white rounded-xl shadow-lg border border-gray-100 p-6 mb-8">
-                        <div class="flex items-center mb-6">
-                            <div class="p-2 bg-indigo-100 rounded-lg mr-3">
-                                <svg class="w-6 h-6 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 100 4m0-4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 100 4m0-4v2m0-6V4"></path>
-                                </svg>
-                            </div>
-                            <div>
-                                <h3 class="text-xl font-semibold text-gray-900">Input Items Resep</h3>
-                                <p class="text-sm text-gray-600 mt-1">Tambahkan bahan baku, kemasan, overhead, dan tenaga kerja untuk resep produk</p>
-                            </div>
-                        </div>
-
-                        <!-- Tab Navigation Utama -->
-                        <div class="border-b border-gray-200 mb-6">
-                            <nav class="-mb-px flex space-x-8">
-                                <button type="button" onclick="switchMainTab('material')" id="main-tab-material" class="py-3 px-1 border-b-2 font-medium text-sm border-blue-600 text-blue-600 flex items-center">
-                                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+                        <!-- Container 1: Bahan Baku & Kemasan (Gabungan dengan Mode Edit) -->
+                        <div class="bg-white rounded-xl shadow-lg border border-gray-100 p-6 flex flex-col min-h-[500px]">
+                            <div class="flex items-center mb-6">
+                                <div class="p-2 bg-blue-100 rounded-lg mr-3">
+                                    <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
                                     </svg>
-                                    Bahan Baku & Kemasan
-                                </button>
-                                <button type="button" onclick="switchMainTab('manual')" id="main-tab-manual" class="py-3 px-1 border-b-2 border-transparent font-medium text-sm text-gray-500 hover:text-gray-700 hover:border-gray-300 flex items-center">
-                                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
-                                    </svg>
-                                    Overhead & Tenaga Kerja
-                                </button>
-                            </nav>
-                        </div>
-
-                        <!-- Content Tab Bahan Baku & Kemasan -->
-                        <div id="main-content-material" class="space-y-6">
-                            <!-- Sub Tab Navigation untuk Bahan/Kemasan -->
-                            <div class="border-b border-gray-200">
-                                <nav class="-mb-px flex space-x-8">
-                                    <button type="button" onclick="switchRecipeTab('bahan')" id="tab-bahan" class="py-2 px-1 border-b-2 font-medium text-sm border-blue-600 text-blue-600">
-                                        Bahan Baku
-                                    </button>
-                                    <button type="button" onclick="switchRecipeTab('kemasan')" id="tab-kemasan" class="py-2 px-1 border-b-2 border-transparent font-medium text-sm text-gray-500 hover:text-gray-700 hover:border-gray-300">
-                                        Kemasan
-                                    </button>
-                                </nav>
+                                </div>
+                                <div>
+                                    <h3 class="text-xl font-semibold text-gray-900" id="recipe-form-title">Bahan Baku & Kemasan</h3>
+                                    <p class="text-sm text-gray-600 mt-1" id="recipe-form-desc">Tambahkan bahan baku atau kemasan yang digunakan dalam resep</p>
+                                </div>
                             </div>
 
-                            <!-- Form Bahan Baku & Kemasan -->
+                            <!-- Form Universal untuk Bahan & Kemasan -->
                             <form action="../process/simpan_resep_produk.php" method="POST" id="recipe-main-form">
                                 <input type="hidden" name="product_id" value="<?php echo htmlspecialchars($selectedProductId); ?>">
                                 <input type="hidden" name="action" value="add_bahan" id="recipe-action">
                                 <input type="hidden" name="recipe_id" value="" id="recipe-edit-id">
+
+                                <!-- Tab Navigation untuk Bahan/Kemasan -->
+                                <div class="border-b border-gray-200 mb-6">
+                                    <nav class="-mb-px flex space-x-8">
+                                        <button type="button" onclick="switchRecipeTab('bahan')" id="tab-bahan" class="py-2 px-1 border-b-2 font-medium text-sm border-blue-600 text-blue-600">
+                                            Bahan Baku
+                                        </button>
+                                        <button type="button" onclick="switchRecipeTab('kemasan')" id="tab-kemasan" class="py-2 px-1 border-b-2 border-transparent font-medium text-sm text-gray-500 hover:text-gray-700 hover:border-gray-300">
+                                            Kemasan
+                                        </button>
+                                    </nav>
+                                </div>
 
                                 <div class="space-y-4">
                                     <div>
@@ -891,8 +870,8 @@ try {
                                 </div>
                             </form>
 
-                            <!-- Info Box untuk Bahan & Kemasan -->
-                            <div class="p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                            <!-- Info Box -->
+                            <div class="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
                                 <div class="flex">
                                     <svg class="w-5 h-5 text-blue-400 mt-0.5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
@@ -909,10 +888,22 @@ try {
                             </div>
                         </div>
 
-                        <!-- Content Tab Overhead & Tenaga Kerja -->
-                        <div id="main-content-manual" class="space-y-6 hidden">
-                            <!-- Sub Tab Navigation untuk Overhead/Labor -->
-                            <div class="border-b border-gray-200">
+                        <!-- Container 2: Input Manual Overhead & Tenaga Kerja -->
+                        <div class="bg-white rounded-xl shadow-lg border border-gray-100 p-6 flex flex-col min-h-[500px]">
+                            <div class="flex items-center mb-6">
+                                <div class="p-2 bg-purple-100 rounded-lg mr-3">
+                                    <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h3 class="text-xl font-semibold text-gray-900">Input Manual Overhead & Tenaga Kerja</h3>
+                                    <p class="text-sm text-gray-600 mt-1">Pilih overhead/tenaga kerja spesifik untuk resep ini</p>
+                                </div>
+                            </div>
+
+                            <!-- Tab Navigation untuk Manual Input -->
+                            <div class="border-b border-gray-200 mb-6">
                                 <nav class="-mb-px flex space-x-8">
                                     <button type="button" onclick="switchManualTab('overhead')" id="manual-tab-overhead" class="py-2 px-1 border-b-2 font-medium text-sm border-purple-600 text-purple-600">
                                         Overhead
@@ -923,18 +914,19 @@ try {
                                 </nav>
                             </div>
 
-                            <!-- Form Overhead & Tenaga Kerja -->
-                            <form action="../process/simpan_resep_produk.php" method="POST" id="manual-form">
-                                <input type="hidden" name="product_id" value="<?php echo htmlspecialchars($selectedProductId); ?>">
-                                <input type="hidden" name="action" value="add_manual_overhead" id="manual-action">
+                            <!-- Universal Form untuk Manual Input -->
+                            <div class="flex-1 flex flex-col">
+                                <form action="../process/simpan_resep_produk.php" method="POST" id="manual-form" class="flex-1">
+                                    <input type="hidden" name="product_id" value="<?php echo htmlspecialchars($selectedProductId); ?>">
+                                    <input type="hidden" name="action" value="add_manual_overhead" id="manual-action">
 
-                                <!-- Content untuk Overhead -->
-                                <div id="manual-content-overhead" class="space-y-4">
-                                    <div>
-                                        <label class="block text-sm font-medium text-gray-700 mb-2">Pilih Overhead yang Akan Ditambahkan</label>
-                                        <select name="overhead_id" id="manual-overhead-select" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500">
-                                            <option value="">-- Pilih Overhead --</option>
-                                            <?php
+                                    <!-- Content untuk Overhead -->
+                                    <div id="manual-content-overhead" class="space-y-4 flex-1 flex flex-col justify-between">
+                                        <div class="flex-1">
+                                            <label class="block text-sm font-medium text-gray-700 mb-2">Pilih Overhead yang Akan Ditambahkan</label>
+                                            <select name="overhead_id" id="manual-overhead-select" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500">
+                                                <option value="">-- Pilih Overhead --</option>
+                                                <?php
                                 try {
                                     // Ambil overhead yang belum dipilih untuk produk ini
                                     $stmtAvailableOverhead = $conn->prepare("
@@ -967,25 +959,27 @@ try {
                                     echo '<option disabled>Error loading overhead data</option>';
                                 }
                                 ?>
-                                        </select>
-                                        <p class="text-xs text-gray-500 mt-2">Pilih item overhead yang akan ditambahkan ke resep produk ini</p>
+                                            </select>
+                                            <p class="text-xs text-gray-500 mt-2">Pilih item overhead yang akan ditambahkan ke resep produk ini</p>
+                                        </div>
+
+                                        <div class="mt-auto">
+                                            <button type="submit" id="manual-submit-btn" class="w-full bg-purple-600 text-white py-2 px-4 rounded-md hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500">
+                                            <svg class="w-5 h-5 mr-2 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                                            </svg>
+                                            <span id="manual-submit-text">Tambah Overhead ke Resep</span>
+                                            </button>
+                                        </div>
                                     </div>
 
-                                    <button type="submit" id="manual-submit-btn" class="w-full bg-purple-600 text-white py-2 px-4 rounded-md hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500">
-                                        <svg class="w-5 h-5 mr-2 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
-                                        </svg>
-                                        <span id="manual-submit-text">Tambah Overhead ke Resep</span>
-                                    </button>
-                                </div>
-
-                                <!-- Content untuk Tenaga Kerja -->
-                                <div id="manual-content-labor" class="space-y-4 hidden">
-                                    <div>
-                                        <label class="block text-sm font-medium text-gray-700 mb-2">Pilih Posisi Tenaga Kerja</label>
-                                        <select name="labor_id" id="manual-labor-select" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500">
-                                            <option value="">-- Pilih Posisi --</option>
-                                            <?php
+                                    <!-- Content untuk Tenaga Kerja -->
+                                    <div id="manual-content-labor" class="space-y-4 hidden flex-1 flex flex-col justify-between">
+                                        <div class="flex-1">
+                                            <label class="block text-sm font-medium text-gray-700 mb-2">Pilih Posisi Tenaga Kerja</label>
+                                            <select name="labor_id" id="manual-labor-select" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500">
+                                                <option value="">-- Pilih Posisi --</option>
+                                                <?php
                                 try {
                                     // Ambil labor yang belum dipilih untuk produk ini
                                     $stmtAvailableLabor = $conn->prepare("
@@ -1015,28 +1009,30 @@ try {
                                     echo '<option disabled>Error loading labor data</option>';
                                 }
                                 ?>
-                                        </select>
-                                        <p class="text-xs text-gray-500 mt-2">Sistem akan menggunakan nilai default dari pengaturan overhead & tenaga kerja</p>
+                                            </select>
+                                            <p class="text-xs text-gray-500 mt-2">Sistem akan menggunakan nilai default dari pengaturan overhead & tenaga kerja</p>
+                                        </div>
+
+                                        <div class="mt-auto">
+                                            <button type="submit" class="w-full bg-orange-600 text-white py-2 px-4 rounded-md hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-orange-500">
+                                            <svg class="w-5 h-5 mr-2 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                                            </svg>
+                                            Tambah Tenaga Kerja ke Resep
+                                        </button>
                                     </div>
+                                </form>
+                            </div>
 
-                                    <button type="submit" class="w-full bg-orange-600 text-white py-2 px-4 rounded-md hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-orange-500">
-                                        <svg class="w-5 h-5 mr-2 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
-                                        </svg>
-                                        Tambah Tenaga Kerja ke Resep
-                                    </button>
-                                </div>
-                            </form>
-
-                            <!-- Info Box untuk Overhead & Tenaga Kerja -->
-                            <div class="p-4 bg-purple-50 border border-purple-200 rounded-lg">
+                            <!-- Catatan Penting -->
+                            <div class="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
                                 <div class="flex">
-                                    <svg class="w-5 h-5 text-purple-400 mt-0.5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <svg class="w-5 h-5 text-blue-400 mt-0.5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                                     </svg>
                                     <div class="text-sm">
-                                        <p class="font-semibold text-purple-800">Catatan Penting</p>
-                                        <ul class="text-purple-700 mt-1 space-y-1">
+                                        <p class="font-semibold text-blue-800">Catatan Penting</p>
+                                        <ul class="text-blue-700 mt-1 space-y-1">
                                             <li>• Item yang ditambahkan di sini akan masuk ke breakdown kalkulasi HPP</li>
                                             <li>• Anda bisa memilih overhead/tenaga kerja mana saja yang spesifik untuk produk ini</li>
                                             <li>• Untuk overhead/tenaga kerja baru, silakan tambahkan di halaman "Pengaturan Overhead & Tenaga Kerja"</li>

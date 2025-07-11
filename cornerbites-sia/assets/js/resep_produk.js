@@ -645,50 +645,6 @@ function switchRecipeTab(tabType) {
     }
 }
 
-// Switch main tab antara material dan manual
-function switchMainTab(tabType) {
-    // Reset all main tabs
-    const materialTab = document.getElementById('main-tab-material');
-    const manualTab = document.getElementById('main-tab-manual');
-    const materialContent = document.getElementById('main-content-material');
-    const manualContent = document.getElementById('main-content-manual');
-
-    // Reset tab styles
-    if (materialTab) {
-        materialTab.className = 'py-3 px-1 border-b-2 border-transparent font-medium text-sm text-gray-500 hover:text-gray-700 hover:border-gray-300 flex items-center';
-    }
-    if (manualTab) {
-        manualTab.className = 'py-3 px-1 border-b-2 border-transparent font-medium text-sm text-gray-500 hover:text-gray-700 hover:border-gray-300 flex items-center';
-    }
-
-    // Hide all content
-    if (materialContent) materialContent.classList.add('hidden');
-    if (manualContent) manualContent.classList.add('hidden');
-
-    if (tabType === 'material') {
-        if (materialTab) {
-            materialTab.className = 'py-3 px-1 border-b-2 font-medium text-sm border-blue-600 text-blue-600 flex items-center';
-        }
-        if (materialContent) {
-            materialContent.classList.remove('hidden');
-        }
-        // Initialize bahan tab
-        switchRecipeTab('bahan');
-    } else if (tabType === 'manual') {
-        if (manualTab) {
-            manualTab.className = 'py-3 px-1 border-b-2 font-medium text-sm border-purple-600 text-purple-600 flex items-center';
-        }
-        if (manualContent) {
-            manualContent.classList.remove('hidden');
-        }
-        // Initialize overhead tab
-        switchManualTab('overhead');
-    }
-}
-
-// Make switchMainTab global
-window.switchMainTab = switchMainTab;
-
 // Switch tab untuk form manual (overhead/labor)
 function switchManualTab(type) {
     const overheadTab = document.getElementById('manual-tab-overhead');
@@ -1355,10 +1311,57 @@ function resetManualForm() {
     switchManualTab('overhead');
 }
 
-
+// Add CSS untuk memastikan container stability
+function addContainerStabilityCSS() {
+    const style = document.createElement('style');
+    style.textContent = `
+        .container-grid {
+            display: grid !important;
+            grid-template-columns: 1fr 1fr !important;
+            gap: 2rem !important;
+            align-items: start !important;
+        }
+        
+        .form-container {
+            position: relative !important;
+            min-height: 500px !important;
+            max-height: none !important;
+            display: flex !important;
+            flex-direction: column !important;
+        }
+        
+        .manual-form-content {
+            flex: 1 !important;
+            display: flex !important;
+            flex-direction: column !important;
+            justify-content: space-between !important;
+        }
+        
+        @media (max-width: 1024px) {
+            .container-grid {
+                grid-template-columns: 1fr !important;
+            }
+        }
+        
+        /* Fix untuk dropdown yang tidak mempengaruhi layout */
+        .manual-content select {
+            width: 100% !important;
+            box-sizing: border-box !important;
+        }
+        
+        /* Prevent layout shift */
+        .form-section {
+            overflow: visible !important;
+            contain: layout !important;
+        }
+    `;
+    document.head.appendChild(style);
+}
 
 // Initialize when DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
+    // Add stability CSS first
+    addContainerStabilityCSS();
     // Format input currency
     const currencyInputs = document.querySelectorAll('input[data-currency]');
     currencyInputs.forEach(input => {
@@ -1458,8 +1461,11 @@ document.addEventListener('DOMContentLoaded', function() {
         showCategoryTab('bahan');
     }
 
-    // Initialize with material tab as default (bahan baku & kemasan)
-    switchMainTab('material');
+    // Initialize form dengan tab bahan
+    switchRecipeTab('bahan');
+
+    // Initialize manual tab dengan overhead
+    switchManualTab('overhead');
 
     // Format existing sale price display
     const salePriceValue = document.getElementById('sale_price');
@@ -1517,7 +1523,25 @@ document.addEventListener('DOMContentLoaded', function() {
 		}
 	}
 
-    console.log('Resep Produk page loaded with unified tab navigation');
+    // Apply container stability classes
+    const containerGrid = document.querySelector('.grid.grid-cols-1.lg\\:grid-cols-2.gap-8.mb-8');
+    if (containerGrid) {
+        containerGrid.classList.add('container-grid');
+    }
+    
+    const formContainers = containerGrid?.querySelectorAll('.bg-white.rounded-xl.shadow-lg');
+    if (formContainers) {
+        formContainers.forEach(container => {
+            container.classList.add('form-container');
+        });
+    }
+    
+    const manualFormContent = document.querySelector('#manual-form');
+    if (manualFormContent) {
+        manualFormContent.classList.add('manual-form-content');
+    }
+
+    console.log('Resep Produk page loaded with container stability fixes');
 });
 
 // Function global untuk update unit dari selection (dipanggil dari PHP)
@@ -1553,4 +1577,3 @@ function updateUnitFromSelection(selectElement) {
     }
 }
 
-// This JavaScript file was updated to modify the tab navigation in the breakdown section, ensuring a more consistent and visually appealing layout.

@@ -36,6 +36,19 @@ class Database {
             // tetapi tidak ada salahnya jika dibiarkan.
             // $this->conn->exec("set names utf8");
 
+            // Debug: Test database connection
+            error_log("Database connection successful to: " . $this->db_name);
+
+            // Test query untuk memastikan tabel ada
+            try {
+                $testStmt = $this->conn->query("SHOW TABLES");
+                $tables = $testStmt->fetchAll(PDO::FETCH_COLUMN);
+                error_log("Available tables: " . implode(", ", $tables));
+            } catch (PDOException $e) {
+                error_log("Error checking tables: " . $e->getMessage());
+            }
+
+
         } catch(PDOException $e) {
             // Tangani error koneksi database
             error_log("Koneksi database gagal: " . $e->getMessage()); // Catat error ke log
